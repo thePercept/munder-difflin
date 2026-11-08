@@ -22,6 +22,10 @@ sequential roles of the backend repository's one-shot Python/Codex adapter.
 Use `maxConcurrentWorkers=1`; disable autonomous worker spawning, voice,
 semantic-memory models, reflection, missions and webhook endpoints initially.
 Close extra browsers and idle terminals through the normal app UI.
+The profile also disables context compaction/clearing and records the existing
+schedule-seeding flags so application startup cannot restore an enabled hourly
+mission. Existing schedule text, trigger thresholds and unrelated settings stay
+available for later manual use.
 
 With Munder closed, locate its EXISTING user-data `config.json`, then run:
 

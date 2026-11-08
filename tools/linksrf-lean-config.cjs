@@ -7,8 +7,15 @@ function leanConfig(current, catalogIds) {
   const next = structuredClone(current);
   Object.assign(next, { maxConcurrentWorkers: 1, orchestratorMaySpawn: false,
     semanticMemory: false, reflectEnabled: false, freeflowEnabled: false,
-    realtimeVoiceEnabled: false, slackEnabled: false, webhookEnabled: false });
+    realtimeVoiceEnabled: false, slackEnabled: false, webhookEnabled: false,
+    opsStandupSeeded: true, heartbeatSeeded: true });
   next.knowledgeGraph = { ...current.knowledgeGraph, enabled: false };
+  // Config defaults enable compaction, and startup seeds the hourly standup
+  // when its migration flag is absent. Keep the opt-in lean profile inactive
+  // across both default filling and a subsequent application restart.
+  next.contextTrigger = { ...current.contextTrigger,
+    compact: { ...current.contextTrigger?.compact, enabled: false },
+    clear: { ...current.contextTrigger?.clear, enabled: false } };
   next.missions = (current.missions || []).map(m => ({ ...m, enabled: false }));
   next.webhookTriggers = (current.webhookTriggers || []).map(t => ({ ...t, enabled: false }));
   next.mcpDefaults = { ...current.mcpDefaults };
